@@ -43,11 +43,13 @@ const { tax } = require('./tax');
  */
 function total(order, context) {
   const { profile, delivery, coupon = null } = context;
+
+  expect(order.items[4] >= 500 && order.items[4] <= 3000)
   
   const orderSubtotal = subtotal(order);
   const orderDiscounts = discounts(order, profile, coupon);
   const orderDelivery = deliveryFee(order, delivery, profile);
-  const orderTax = tax(order, delivery);
+  const orderTax = tax(order, delivery, orderDelivery);
   let orderTotal = orderSubtotal - orderDiscounts + orderDelivery + orderTax;
   
   if (delivery.rush) {
