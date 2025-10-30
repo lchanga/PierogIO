@@ -14,12 +14,9 @@ function tax(order, delivery) {
   for (const item of order.items) {
     const itemTotal = item.unitPriceCents * item.qty;
 
-    if (item.kind === 'frozen') {
-      const taxRate = TaxAPI.lookup(item.kind);
-      const itemTax = Math.floor(itemTotal * taxRate);
-      totalTax += itemTax;
-      hasHotItems = false;
-    }
+    const taxRate = TaxAPI.lookup(item.kind);
+    const itemTax = Math.floor(itemTotal * taxRate);
+    totalTax += itemTax;
     if (item.kind === 'hot') {
       hasHotItems = true;
     }

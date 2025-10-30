@@ -35,6 +35,34 @@ describe('Order Calculations', () => {
       expect(orderTotal).toBeGreaterThan(0);
       expect(Number.isInteger(orderTotal)).toBe(true);
     });
+
+    it('charges tax for hot items)', () => {
+      const order = {
+        items: [
+          {
+            sku: 'CHEESE',
+            title: 'Cheese Hot Test',
+            kind: 'hot',
+            filling: 'cheese',
+            qty: 1,
+            unitPriceCents: 1000,
+            addOns: []
+          }
+        ]
+      };
+
+      const context = {
+        profile: { tier: 'guest' },
+        delivery: {
+          zone: 'local',
+          rush: false,
+        },
+      };
+
+      // tax should be greater than 0 for all items
+      const computedTax = tax(order, context.delivery);
+      expect(computedTax).toBeGreaterThan(0);
+    });
   });
 
 });
